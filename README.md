@@ -15,3 +15,40 @@ FROM renting
 GROUP BY customer_id
 HAVING COUNT(*) > 7 -- Select only customers with more than 7 movie rentals
 ORDER BY AVG(rating); -- Order by the average rating in ascending order
+
+
+SELECT 
+	SUM(m.renting_price), -- Get the revenue from movie rentals
+	COUNT(*), -- Count the number of rentals
+	COUNT(DISTINCT r.customer_id) -- Count the number of customers
+FROM renting AS r
+LEFT JOIN movies AS m
+ON r.movie_id = m.movie_id;
+
+
+SELECT 
+	SUM(m.renting_price), 
+	COUNT(*), 
+	COUNT(DISTINCT r.customer_id)
+FROM renting AS r
+LEFT JOIN movies AS m
+ON r.movie_id = m.movie_id
+-- Only look at movie rentals in 2018
+WHERE date_renting > '2017-12-31' AND 
+date_renting < '2019-01-01' ;
+
+
+SELECT a.name, -- Create a list of movie titles and actor names
+       m.title
+FROM actsin AS ai
+LEFT JOIN movies AS m
+ON m.movie_id = ai.movie_id
+LEFT JOIN actors AS a
+ON a.actor_id = ai.actor_id;
+
+
+SELECT m.title, -- Use a join to get the movie title and price for each movie rental
+       renting_price
+FROM renting AS r
+LEFT JOIN movies AS m
+ON m.movie_id = r.movie_id;
