@@ -52,3 +52,26 @@ SELECT m.title, -- Use a join to get the movie title and price for each movie re
 FROM renting AS r
 LEFT JOIN movies AS m
 ON m.movie_id = r.movie_id;
+
+
+SELECT rm.title, -- Report the income from movie rentals for each movie 
+      SUM(renting_price) AS income_movie
+FROM
+       (SELECT m.title,  
+               m.renting_price
+       FROM renting AS r
+       LEFT JOIN movies AS m
+       ON r.movie_id=m.movie_id) AS rm
+GROUP BY rm.title
+ORDER BY income_movie DESC; -- Order the result by decreasing income
+
+
+SELECT a.gender, -- Report for male and female actors from the USA 
+       MIN(a.year_of_birth), -- The year of birth of the oldest actor
+      MAX(a.year_of_birth) -- The year of birth of the youngest actor
+FROM
+   (SELECT * -- Use a subsequen SELECT to get all information about actors from the USA
+   FROM actors)
+   AS a
+   WHERE nationality = 'USA' -- Give the table the name a
+GROUP BY gender;
